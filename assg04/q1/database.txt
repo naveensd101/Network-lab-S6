@@ -1,20 +1,13 @@
 naveen:hi
-yo:hi
-naveen:hi2
-yo:how are you naveen
-naveen:hi
-naveen:im good yo
-yo:hi
-yo:good im leaving
-naveen:ok
-yo:bye
-naveen:tat
-yo:exit
-naveen:hi
+king:hi
+king:how are you naveen
+naveen:show
+naveen:i am good king
+king:show
+king:ok then see you soon
+king:bye
+naveen:show
+naveen:tata
+king:show
+king:exit
 naveen:exit
-nsd:hi
-nsd:thats good
-nsd:exit
-yoyo:hi
-yoyo:wow thats good
-yoyo:exit

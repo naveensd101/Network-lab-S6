@@ -56,9 +56,9 @@ void func_commun(int connfd) {
 }
 int main() {
 	//clear the contents of the file database.txt
-	//FILE *fp;
-	//fp = fopen("database.txt","w");
-	//fclose(fp);
+	FILE *fp;
+	fp = fopen("database.txt","w");
+	fclose(fp);
 	int sockfd, connfd, len;
 	struct sockaddr_in servaddr, cli;
 

@@ -29,6 +29,27 @@ void func_commun(int sockfd) {
 			strcpy(send_buff, name);
 			break;
 		}
+		else if (strcmp(buff, "show\n") == 0) {
+			//we will have to read the messages from the server and print them till we get a string "end_of_reading_file"
+			printf("-----messages we have till now-----\n");
+			char c;
+			while(1) {
+				bzero(buff, 512);
+				n = read(sockfd, buff, 512);
+				if(n < 0) {
+					printf("Error reading from socket\n");
+					exit(1);
+				}
+				if(strcmp(buff, "end_of_reading_file") == 0) {
+					break;
+				}
+				else {
+					printf("%s", buff);
+				}
+			}
+			printf("--------end of messages-----------\n");
+			bzero(buff, 512);
+		}
 		else {
 			//we will have to read the messages from the server and print them till we get a string "end_of_reading_file"
 			printf("-----messages we have till now-----\n");
@@ -48,6 +69,7 @@ void func_commun(int sockfd) {
 				}
 			}
 			printf("--------end of messages-----------\n");
+			bzero(buff, 512);
 		}
 	}
 }
