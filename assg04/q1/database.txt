@@ -1,13 +1,7 @@
 naveen:hi
-king:hi
-king:how are you naveen
-naveen:show
-naveen:i am good king
-king:show
-king:ok then see you soon
-king:bye
-naveen:show
-naveen:tata
-king:show
-king:exit
+boy:hi
+boy:how are you
+naveen:i am good
+boy:show
+boy:exit
 naveen:exit
