@@ -1,0 +1,20 @@
+naveen:hi
+yo:hi
+naveen:hi2
+yo:how are you naveen
+naveen:hi
+naveen:im good yo
+yo:hi
+yo:good im leaving
+naveen:ok
+yo:bye
+naveen:tat
+yo:exit
+naveen:hi
+naveen:exit
+nsd:hi
+nsd:thats good
+nsd:exit
+yoyo:hi
+yoyo:wow thats good
+yoyo:exit
