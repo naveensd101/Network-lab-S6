@@ -1,7 +1,4 @@
 naveen:hi
-boy:hi
-boy:how are you
-naveen:i am good
-boy:show
-boy:exit
+naveen2:hi from naveen2
 naveen:exit
+naveen2:hi
