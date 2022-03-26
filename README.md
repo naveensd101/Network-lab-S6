@@ -6,3 +6,4 @@
 4. Socket programming (multi client server - group chat app and math server)
 5. DVR and LSR algoritm illustration
 6. Socket programming to send and recieve any type of file
+7. SMTP and POP3
