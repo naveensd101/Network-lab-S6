@@ -1,16 +1,15 @@
-`Live
-Sat Mar 26 17:44:30 2022
+`dive
+Sun Mar 27 12:33:32 2022
 
 From: naveen@localhost
 To: jes@localhost
-Subject: hi
-how are you
-i am good
+Subject: mail 1
+this is the body of mail 1
+2nd line of mail 1
 `Live
-Sat Mar 26 17:46:08 2022
+Sun Mar 27 13:57:54 2022
 
-From: jes@localhost
-To: naveen@localhost
-Subject: return hi
-this is a reture hi message
-from me
+From: naveen@localhost
+To: Fourouzan@localhost
+Subject: hi
+hi2

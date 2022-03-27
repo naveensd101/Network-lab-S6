@@ -29,7 +29,7 @@ void communicate_with_client(int sockfd) {
 			strcpy(buffer, "Good Bye from SMTP!!\n");
 			write(sockfd, buffer, SIZE);
 			printf("Client has quit\n");
-			break;
+			return;
 		}
 		else if(strcmp(buffer, "auth\n") == 0) {
 			//get username and password from client

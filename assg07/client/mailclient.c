@@ -17,7 +17,7 @@ const int PPORT = 5035; //POP3 port
 
 int AUTH = 0;
 
-void communicate_with_servers(int SMTP/*, int POP3*/) {
+void communicate_with_servers(int SMTP, int POP3) {
 	char buffer[SIZE];
 	int n;
 	while(1) {
@@ -33,7 +33,13 @@ void communicate_with_servers(int SMTP/*, int POP3*/) {
 			printf("[msg from SMTP] %s", buffer);
 
 			close(SMTP);
-			exit(0);
+			strcpy(buffer, "quit\n");
+			write(POP3, buffer, SIZE);
+			printf("[@Client] Closing connection to POP3...\n");
+			bzero(buffer, SIZE);
+			read(POP3, buffer, SIZE);
+			printf("[msg from POP3] %s", buffer);
+			return;
 		}
 		else if(strcmp(buffer, "auth\n") == 0) {
 			//auth will not be implemented in this version
@@ -91,6 +97,143 @@ void communicate_with_servers(int SMTP/*, int POP3*/) {
 			}
 			write(SMTP, buffer, SIZE);
 		}
+		else if(strcmp(buffer, "Manage\n") == 0) {
+			//manage done by pop server
+			//first authenticate
+			write(POP3, buffer, SIZE);
+			printf("[@Client] Enter username: ");
+			char username[SIZE];
+			bzero(username, SIZE);
+			fgets(username, SIZE, stdin);
+			write(POP3, username, SIZE);
+			char password[SIZE];
+			bzero(password, SIZE);
+			fgets(password, SIZE, stdin);
+			write(POP3, password, SIZE);
+			bzero(buffer, SIZE);
+			read(POP3, buffer, SIZE);
+			if(strcmp(buffer, "Authenticated\n") == 0) {
+				printf("Authenticated\n");
+			}
+			else {
+				printf("Wront username or password\n");
+				continue;
+			}
+			bzero(buffer, SIZE);
+			printf("[@Client]---MAIL-MANAGE---\n");
+			//recieve data till you get a this is over message
+			read(POP3, buffer, SIZE);
+			while(strcmp(buffer, "End of the message stuff\n") != 0) {
+				printf("%s", buffer);
+				bzero(buffer, SIZE);
+				read(POP3, buffer, SIZE);
+			}
+		}
+		else if(strcmp(buffer, "view\n") == 0) {
+			//view is done by pop server
+			write(POP3, buffer, SIZE);
+			printf("[@Client] Enter username: ");
+			char username[SIZE];
+			bzero(username, SIZE);
+			fgets(username, SIZE, stdin);
+			write(POP3, username, SIZE);
+			char password[SIZE];
+			bzero(password, SIZE);
+			fgets(password, SIZE, stdin);
+			write(POP3, password, SIZE);
+			bzero(buffer, SIZE);
+			read(POP3, buffer, SIZE);
+			if(strcmp(buffer, "Authenticated\n") == 0) {
+				printf("Authenticated\n");
+			}
+			else {
+				printf("Wront username or password\n");
+				continue;
+			}
+			//send slno to be viewed
+			int slno = 0;
+			printf("Enter the slno of the message to be viewed: ");
+			scanf("%d", &slno);
+			bzero(buffer, SIZE);
+			sprintf(buffer, "%d\n", slno);
+			write(POP3, buffer, SIZE);
+			bzero(buffer, SIZE);
+			printf("[@Client]---MAIL-MANAGE---\n");
+			//recieve data till you get a this is over message
+			read(POP3, buffer, SIZE);
+			while(strcmp(buffer, "End of the message stuff\n") != 0) {
+				printf("%s", buffer);
+				bzero(buffer, SIZE);
+				read(POP3, buffer, SIZE);
+			}
+		}
+		else if(strcmp(buffer, "del\n") == 0) {
+			//del is done by pop server
+			write(POP3, buffer, SIZE);
+			printf("[@Client] Enter username: ");
+			char username[SIZE];
+			bzero(username, SIZE);
+			fgets(username, SIZE, stdin);
+			write(POP3, username, SIZE);
+			char password[SIZE];
+			bzero(password, SIZE);
+			fgets(password, SIZE, stdin);
+			write(POP3, password, SIZE);
+			bzero(buffer, SIZE);
+			read(POP3, buffer, SIZE);
+			if(strcmp(buffer, "Authenticated\n") == 0) {
+				printf("Authenticated\n");
+			}
+			else {
+				printf("Wront username or password\n");
+				continue;
+			}
+			//send slno to be viewed
+			int slno = 0;
+			printf("Enter the slno of the message to be deleted: ");
+			scanf("%d", &slno);
+			bzero(buffer, SIZE);
+			sprintf(buffer, "%d\n", slno);
+			write(POP3, buffer, SIZE);
+			bzero(buffer, SIZE);
+			read(POP3, buffer, SIZE);
+			printf("%s", buffer);
+		}
+		else if(strcmp(buffer, "FilterFrom\n") == 0) {
+			//view is done by pop server
+			write(POP3, buffer, SIZE);
+			printf("[@Client] Enter username: ");
+			char username[SIZE];
+			bzero(username, SIZE);
+			fgets(username, SIZE, stdin);
+			write(POP3, username, SIZE);
+			char password[SIZE];
+			bzero(password, SIZE);
+			fgets(password, SIZE, stdin);
+			write(POP3, password, SIZE);
+			bzero(buffer, SIZE);
+			read(POP3, buffer, SIZE);
+			if(strcmp(buffer, "Authenticated\n") == 0) {
+				printf("Authenticated\n");
+			}
+			else {
+				printf("Wront username or password\n");
+				continue;
+			}
+			char from[SIZE];
+			printf("Enter the from address to filter: ");
+			bzero(from, SIZE);
+			fgets(from, SIZE, stdin);
+			write(POP3, from, SIZE);
+			printf("[@Client]---MAIL-MANAGE---\n");
+			//recieve data till you get a this is over message
+			read(POP3, buffer, SIZE);
+			while(strcmp(buffer, "End of the message stuff\n") != 0) {
+				printf("%s", buffer);
+				bzero(buffer, SIZE);
+				read(POP3, buffer, SIZE);
+			}
+		}
 	}
 }
 
@@ -125,7 +268,6 @@ int main() {
 	}
 	//-----------------SMTP init over-----------------
 	//-----------------POP3 server--------------------
-	/*
 	int sockfd_pop3;
 	struct sockaddr_in serv_addr_pop3;
 
@@ -153,10 +295,9 @@ int main() {
 	else {
 		printf("Connected to POP3 server\n");
 	}
-	*/
 	//-----------------POP3 init over-----------------
 
-	communicate_with_servers(sockfd_smtp/*, sockfd_pop3*/);
+	communicate_with_servers(sockfd_smtp, sockfd_pop3);
 	close(sockfd_smtp);
 	//close(sockfd_pop3);
 	return 0;
