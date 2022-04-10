@@ -1,3 +1,4 @@
+#include <fstream>
 #include "ns3/core-module.h"
 #include "ns3/point-to-point-module.h"
 #include "ns3/network-module.h"
@@ -106,6 +107,10 @@ int main (int argc, char *argv[])
   NetDeviceContainer cncCSMA_devices;
   cncCSMA_devices = csma.Install(cncCSMAnodes);
 
+  Ptr<RateErrorModel> em = CreateObject<RateErrorModel> ();
+  em->SetAttribute ("ErrorRate", DoubleValue (0.15));
+  cncCSMA_devices.Get (4)->SetAttribute ("ReceiveErrorModel", PointerValue (em));
+
   stack.Install(cncCSMAnodes);
 
   address.SetBase("1.1.5.0", "255.255.255.0");
@@ -189,7 +194,7 @@ int main (int argc, char *argv[])
 
   ApplicationContainer serverApps = echoServer.Install (cccServer1.Get (1));
   serverApps.Start (Seconds (1.0));
-  serverApps.Stop (Seconds (10.0));
+  serverApps.Stop (Seconds (100.0));
 
   UdpEchoClientHelper echoClient (cccS1interfaces.GetAddress (1), 69);
   echoClient.SetAttribute ("MaxPackets", UintegerValue (1));
@@ -198,26 +203,26 @@ int main (int argc, char *argv[])
 
   ApplicationContainer clientApps = echoClient.Install (wifiStaNodes.Get (2));
   clientApps.Start (Seconds (2.0));
-  clientApps.Stop (Seconds (10.0));
+  clientApps.Stop (Seconds (100.0));
 
   UdpEchoServerHelper echoServer2 (70);
 
   ApplicationContainer serverApps2 = echoServer2.Install (cccServer2.Get (1));
   serverApps2.Start (Seconds (5.0));
-  serverApps2.Stop (Seconds (10.0));
+  serverApps2.Stop (Seconds (100.0));
 
   UdpEchoClientHelper echoClient2 (cccS2interfaces.GetAddress (1), 70);
-  echoClient2.SetAttribute ("MaxPackets", UintegerValue (1));
+  echoClient2.SetAttribute ("MaxPackets", UintegerValue (2));
   echoClient2.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
   echoClient2.SetAttribute ("PacketSize", UintegerValue (1024));
 
   ApplicationContainer clientApps2 = echoClient2.Install (cncCSMAnodes.Get (4));
   clientApps2.Start (Seconds (7.0));
-  clientApps2.Stop (Seconds (10.0));
+  clientApps2.Stop (Seconds (100.0));
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
-  Simulator::Stop (Seconds (10.0));
+  Simulator::Stop (Seconds (200.0));
 
   Simulator::Run ();
   Simulator::Destroy ();
