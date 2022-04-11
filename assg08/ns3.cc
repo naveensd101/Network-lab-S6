@@ -224,7 +224,7 @@ int main (int argc, char *argv[])
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
   AsciiTraceHelper ascii;
   mRp2p.EnableAsciiAll(ascii.CreateFileStream("first.tr"));
-
+  mRp2p.EnablePcapAll("final");
 
   Simulator::Stop (Seconds (200.0));
 
@@ -232,3 +232,4 @@ int main (int argc, char *argv[])
   Simulator::Destroy ();
   return 0;
 }
+
