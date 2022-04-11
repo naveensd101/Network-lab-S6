@@ -108,7 +108,8 @@ int main (int argc, char *argv[])
   cncCSMA_devices = csma.Install(cncCSMAnodes);
 
   Ptr<RateErrorModel> em = CreateObject<RateErrorModel> ();
-  em->SetAttribute ("ErrorRate", DoubleValue (0.15));
+  em->SetAttribute("ErrorUnit", StringValue("ERROR_UNIT_PACKET"));
+  em->SetAttribute ("ErrorRate", DoubleValue (0.5));
   cncCSMA_devices.Get (4)->SetAttribute ("ReceiveErrorModel", PointerValue (em));
 
   stack.Install(cncCSMAnodes);
@@ -212,7 +213,7 @@ int main (int argc, char *argv[])
   serverApps2.Stop (Seconds (100.0));
 
   UdpEchoClientHelper echoClient2 (cccS2interfaces.GetAddress (1), 70);
-  echoClient2.SetAttribute ("MaxPackets", UintegerValue (2));
+  echoClient2.SetAttribute ("MaxPackets", UintegerValue (5));
   echoClient2.SetAttribute ("Interval", TimeValue (Seconds (1.0)));
   echoClient2.SetAttribute ("PacketSize", UintegerValue (1024));
 
@@ -221,6 +222,9 @@ int main (int argc, char *argv[])
   clientApps2.Stop (Seconds (100.0));
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+  AsciiTraceHelper ascii;
+  mRp2p.EnableAsciiAll(ascii.CreateFileStream("first.tr"));
+
 
   Simulator::Stop (Seconds (200.0));
 
