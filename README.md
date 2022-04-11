@@ -7,3 +7,4 @@
 5. DVR and LSR algoritm illustration
 6. Socket programming to send and recieve any type of file
 7. SMTP and POP3
+8. Simulating a simple topology using ns3
